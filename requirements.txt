@@ -1,6 +1,7 @@
 dash
 dash_extensions
 dash_core_components
+dash_bootstrap_components
 python-dotenv
 slack-sdk
 gunicorn
