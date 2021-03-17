@@ -42,8 +42,10 @@ app.layout = html.Div([
 @app.callback(Output('blank', 'data'),
               Input('button-walk', 'n_clicks'),
               Input('button-pee', 'n_clicks'),
-              Input('button-poop', 'n_clicks'))
-def send_message(walk, pee, poop):
+              Input('button-poop', 'n_clicks'),
+              Input('button-fed', 'n_clicks'),
+              )
+def send_message(*args):
     cid = [p['prop_id'] for p in dash.callback_context.triggered][0]
     tz = timezone('US/Eastern')
     now = datetime.datetime.now(tz=tz)
