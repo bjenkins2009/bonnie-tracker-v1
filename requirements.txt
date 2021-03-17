@@ -5,3 +5,4 @@ dash_bootstrap_components
 python-dotenv
 slack-sdk
 gunicorn
+pytz

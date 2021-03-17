@@ -12,19 +12,27 @@ from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 from slack_driver import slack_message
 import datetime
+from pytz import timezone
 
 app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
-btn_attr =  dict(size="lg", className="mr-1")
-button_group = dbc.ButtonGroup(
+btn_attr = dict(size="lg",
+                block=True,
+                className="mr-1",
+                style={'height': '10vh',
+                       'font-size': '32px'},
+                )
+button_group = html.Div(
     [
-        dbc.Button("Just Walk", id='button-walk'),
-        dbc.Button("Pee", id='button-pee'),
-        dbc.Button("Poop", id='button-poop')
+        dbc.Button("Just Walk", id='button-walk', **btn_attr),
+        dbc.Button("Pee", id='button-pee', **btn_attr),
+        dbc.Button("Poop", id='button-poop', **btn_attr),
+        dbc.Button("Fed", id='button-fed', **btn_attr)
     ],
-    vertical=True,)
+    # vertical=True, size='lg'
+)
 
 app.layout = html.Div([
     button_group,
@@ -37,7 +45,8 @@ app.layout = html.Div([
               Input('button-poop', 'n_clicks'))
 def send_message(walk, pee, poop):
     cid = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    now = datetime.datetime.now()
+    tz = timezone('US/Eastern')
+    now = datetime.datetime.now(tz=tz)
     current_time = now.strftime("%H:%M:%S")
 
     if 'pee' in cid:
@@ -46,6 +55,8 @@ def send_message(walk, pee, poop):
         slack_message(text=f'Bonnie pooped at {current_time}')
     if 'walk' in cid:
         slack_message(text=f'Bonnie was out but did nothing at {current_time}')
+    if 'fed' in cid:
+        slack_message(text=f'Bonnie was fed at {current_time}')
 
 if __name__ == '__main__':
     app.run_server(
