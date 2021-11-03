@@ -11,8 +11,12 @@ from dash_extensions import Keyboard
 from dash.exceptions import PreventUpdate
 import dash_bootstrap_components as dbc
 from slack_driver import slack_message
+from email_driver import email_message
 import datetime
 from pytz import timezone
+
+EMAILS = ["6038311618@vtext.com",
+          "7046190272@txt.att.net"]
 
 app = dash.Dash(__name__,
                 external_stylesheets=[dbc.themes.BOOTSTRAP])
